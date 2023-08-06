@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enviar Correo</title>
+</head>
+<body>
+  <form id="correoForm">
+    <label for="destinatario">Destinatario:</label>
+    <input type="email" id="destinatario" required><br>
+
+    <label for="horaFecha">Hora y Fecha:</label>
+    <input type="text" id="horaFecha" required><br>
+
+    <label for="pelicula">Película:</label>
+    <input type="text" id="pelicula" required><br>
+
+    <button type="submit">Enviar Correo</button>
+  </form>
+
+  <script>
+    document.getElementById("correoForm").addEventListener("submit", async function (event) {
+      event.preventDefault(); // Evita que el formulario se envíe por defecto
+
+      const destinatario = document.getElementById("destinatario").value;
+      const horaFecha = document.getElementById("horaFecha").value;
+      const pelicula = document.getElementById("pelicula").value;
+
+      const data = { destinatario, horaFecha, pelicula };
+
+      try {
+        const response = await fetch("http://localhost:3000/enviarCorreo/enviarCorreo", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log(result.message); // Mensaje de respuesta del servidor
+      } catch (error) {
+        console.error("Error al enviar el correo:", error);
+      }
+    });
+  </script>
+</body>
+</html>
